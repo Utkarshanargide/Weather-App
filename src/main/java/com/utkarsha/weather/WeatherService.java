@@ -28,9 +28,21 @@ public class WeatherService {
 
             connection.setRequestMethod("GET");
 
-            BufferedReader reader =
-                    new BufferedReader(
-                            new InputStreamReader(connection.getInputStream()));
+            BufferedReader reader;
+
+            if(connection.getResponseCode() >= 200 &&
+            connection.getResponseCode() < 300){
+
+             // Success response
+             reader = new BufferedReader(
+                 new InputStreamReader(connection.getInputStream()));
+
+            } else {
+
+             // Error response (like invalid city)
+             reader = new BufferedReader(
+                new InputStreamReader(connection.getErrorStream()));
+            }
 
             StringBuilder response = new StringBuilder();
 
@@ -45,9 +57,10 @@ public class WeatherService {
             return response.toString();
 
         } catch (Exception e) {
-            return "{\"error\":\"Unable to fetch weather\"}";
+            e.printStackTrace();
+             return "{\"error\":\"Unable to fetch weather\"}";
+            }
         }
 
     }
 
-}
