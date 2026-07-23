@@ -7,7 +7,7 @@
     <meta charset="UTF-8">
     <title>Weather App</title>
 
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/style.css?v=6">
 </head>
 
 <%
@@ -44,20 +44,30 @@
 
     <h1>🌦 Weather App</h1>
 
-    <form action="weather" method="post">
+<form action="weather" method="post">
 
-        <input
-            type="text"
-            name="city"
-            placeholder="Enter city name"
-            value="<%= request.getParameter("city") != null ? request.getParameter("city") : "" %>"
-            required>
+    <input type="text" name="city" placeholder="Enter city name" required>
 
-        <button type="submit">
-            Search
-        </button>
+    <button type="submit" class="search-btn">
+        🔍 Search
+    </button>
 
-    </form>
+    <button type="button" id="locationBtn" class="location-btn">
+        📍 Use My Location
+    </button>
+
+    <input type="hidden" name="lat" id="lat">
+    <input type="hidden" name="lon" id="lon">
+
+</form>
+
+       <!-- =========================
+              RECENT SEARCHES
+        ========================= -->
+        <div id="recentSearches" class="recent-searches">
+            <h3>🕘 Recent Searches</h3>
+            <div id="recentList" class="recent-list"></div>
+        </div>
 
     <!-- Loading Spinner -->
     <div id="loading" class="loader" style="display:none;">
@@ -82,7 +92,13 @@
         </p>
 
         <div class="weather-card">
+        <% if(request.getAttribute("isCurrentLocation") != null){ %>
 
+        <div class="location-badge">
+            📍 Current Location
+        </div>
+
+        <% } %>    
             <div class="weather-header">
 
                 <img src="<%= request.getAttribute("iconUrl") %>"
@@ -141,7 +157,7 @@
 
 <% } %>
 
-<script src="js/script.js"></script>
+<script src="<%= request.getContextPath() %>/js/script.js?v=3"></script>
 
 </body>
 </html>
